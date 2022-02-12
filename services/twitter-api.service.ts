@@ -1,11 +1,24 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
+import { ITwitterMediaLinkMeta } from '../reducers/twitterProfileReducer'
 import { UserMetaData, UserTweetsResponse } from '../types/twitter'
+import { getRequest } from './backend.service'
 
 dotenv.config({ path: './.env' })
 
 const DEFAULT_TWEET_LIMIT = 200
 const DEFAULT_TWEETS_PER_PAGE = 100
+
+type IResponse = {
+  data: {
+    nsfw: ITwitterMediaLinkMeta[]
+    sfw: ITwitterMediaLinkMeta[]
+  }
+}
+
+export const fetchPostsForUserId = async (id: number) => {
+  return await getRequest<IResponse>(`/twitter/posts?q=${id.toString()}`)
+}
 
 export const MakeClient = () =>
   axios.create({
