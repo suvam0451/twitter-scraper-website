@@ -9,8 +9,18 @@ import {
   faChevronRight,
   faHeart,
   faCloudDownload,
+  faFileDownload,
+  faDownload,
+  faCloudDownloadAlt,
+  faListDots,
+  faEllipsis,
 } from '@fortawesome/free-solid-svg-icons'
 import { TWITTER_STORE_ACTION } from '../reducers/twitterProfileReducer'
+import { downloadMedia } from '../lib/objectDownload'
+
+const filenameGenerator = {
+  photo: /([a-zA-Z0-9]+\.(jpg|png))/,
+}
 
 const TwitterImageGallery = () => {
   const { state, dispatch } = useTwitterStateContext()
@@ -22,6 +32,22 @@ const TwitterImageGallery = () => {
     rightLocked: true,
   })
   const [LikedCurrent, setLikedCurrent] = useState(false)
+
+  useEffect(() => {
+    window.addEventListener(
+      'keydown',
+      function (e) {
+        if (
+          ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(
+            e.code
+          ) > -1
+        ) {
+          e.preventDefault()
+        }
+      },
+      false
+    )
+  }, [])
 
   useEffect(() => {
     setTotalLength(state?.nsfwLinks.length || -1)
@@ -56,20 +82,19 @@ const TwitterImageGallery = () => {
     })
   }
 
-  const onPressDislike = (e: any) => {
-    setLikedCurrent(false)
-    dispatch!({
-      type: TWITTER_STORE_ACTION.LIKE_IMAGE,
-      payload: {
-        itemIndex: Counter,
-      },
-    })
+  const onPressDownload = (e: any) => {
+    if (Counter < 0 || Counter >= TotalLength || !state!.nsfwLinks[Counter].url)
+      return
+
+    const { url, type } = state!.nsfwLinks[Counter]
+    const result = url.match(filenameGenerator[type])
+    downloadMedia(url, result[1])
   }
 
   useKeyPressEvent('ArrowLeft', onPressPrevious)
   useKeyPressEvent('ArrowRight', onPressNext)
   useKeyPressEvent('ArrowUp', onPressLike)
-  useKeyPressEvent('ArrowDown', onPressDislike)
+  useKeyPressEvent('ArrowDown', onPressDownload)
 
   useEffect(() => {
     setNavigationBounds({
@@ -91,11 +116,6 @@ const TwitterImageGallery = () => {
     })
   }
 
-  useEffect(() => {
-    console.log(LikedCurrent)
-    console.log('state updated', state)
-  }, [state, LikedCurrent])
-
   return state!.nsfwLinks.length > 0 && Counter !== -1 ? (
     <>
       <Center className="flex flex-row mb-4">
@@ -110,7 +130,7 @@ const TwitterImageGallery = () => {
         />
       </Center>
 
-      <Center className="flex flex-row" alignContent={'center'}>
+      <Center className="flex flex-row h-full" alignContent={'center'}>
         <FontAwesomeIcon
           icon={faChevronLeft}
           size={'3x'}
@@ -120,38 +140,78 @@ const TwitterImageGallery = () => {
         />
 
         <Box
-          boxSize={'sm'}
+          // height={'lg'}
+          width={'sm'}
           alignContent={'center'}
           className={'flex flex-row'}
           mx={4}
         >
-          <Box verticalAlign={'middle'} margin="auto" className="relative">
+          <Box verticalAlign={'middle'} margin="auto">
             {Counter === TotalLength ? (
               <DownloadPrompt />
             ) : (
-              <Box>
-                <Image
-                  src={state!.nsfwLinks[Counter].url}
-                  alt="twitter image"
-                  crossOrigin="anonymous"
-                  objectFit={'contain'}
-                  marginY={'auto'}
-                />
+              <Box minHeight={'md'} className={'relative'}>
+                <Box className={'my-auto bg-red-400'}>
+                  <Image
+                    src={state!.nsfwLinks[Counter].url}
+                    alt="twitter image"
+                    crossOrigin="anonymous"
+                    objectFit={"fill"}
+                    // marginY={'auto'}
+                  />
+                </Box>
                 <Box className={'absolute right-full bottom-full'}>
                   <Box className={'relative'}>
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      size={'2x'}
-                      onClick={() => {
-                        onPressFavourite(Counter)
-                      }}
-                      color={
-                        state!.nsfwLinks[Counter].liked || LikedCurrent
-                          ? '#ffbfbd'
-                          : 'gray'
+                    <Box
+                      className={
+                        'absolute mr-4 mt-1 right-full top-full flex flex-col'
                       }
-                      className={'absolute mr-1 mt-1 right-full top-full'}
-                    />
+                    >
+                      <Center>
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          size={'2x'}
+                          onClick={() => {
+                            onPressFavourite(Counter)
+                          }}
+                          color={
+                            state!.nsfwLinks[Counter].liked || LikedCurrent
+                              ? '#ffbfbd'
+                              : 'gray'
+                          }
+                        />
+                      </Center>
+                      <Center>
+                        <FontAwesomeIcon
+                          icon={faFileDownload}
+                          size={'2x'}
+                          onClick={() => {
+                            onPressFavourite(Counter)
+                          }}
+                          color={
+                            state!.nsfwLinks[Counter].liked || LikedCurrent
+                              ? '#ffbfbd'
+                              : 'gray'
+                          }
+                          className={'mt-5'}
+                        />
+                      </Center>
+                      <Center>
+                        <FontAwesomeIcon
+                          icon={faEllipsis}
+                          size={'2x'}
+                          onClick={() => {
+                            onPressFavourite(Counter)
+                          }}
+                          color={
+                            state!.nsfwLinks[Counter].liked || LikedCurrent
+                              ? '#ffbfbd'
+                              : 'gray'
+                          }
+                          className={'mt-5'}
+                        />
+                      </Center>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -195,7 +255,7 @@ const DownloadPrompt = () => {
         </Box>
         <Button mt={8}>
           {' '}
-          <FontAwesomeIcon icon={faCloudDownload} size={"1x"} />
+          <FontAwesomeIcon icon={faCloudDownload} size={'1x'} />
           <Text ml={2}>Download Now</Text>
         </Button>
       </Center>

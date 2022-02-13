@@ -5,18 +5,16 @@ import NavBar from '../components/NavBar'
 import TwitterAccountSavedProfile from '../components/TwitterAccountSavedProfile'
 import TwitterImageGallery from '../components/TwitterImageGallery'
 import ViewSelection from '../components/elements/ViewSelection'
+import BaseLayout from '../layouts/BaseLayout'
 
 const TwitterScraper: NextPage = () => {
   return (
-    <>
-      <NavBar />
+    <BaseLayout>
       <TwitterAccountSearch />
-
       <TwitterAccountSavedProfile />
-      <TwitterImageGallery/>
-      <ViewSelection />
-      {/* <PercentageWrapper /> */}
-    </>
+      <TwitterImageGallery />
+      {/* <ViewSelection /> */}
+    </BaseLayout>
   )
 }
 

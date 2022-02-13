@@ -9,7 +9,13 @@ import { useTwitterStateContext } from '../context/twitterProfileReducer'
 import { TWITTER_STORE_ACTION } from '../reducers/twitterProfileReducer'
 import { UserMetaData } from '../types/twitter'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCoffee,
+  faChevronLeft,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons'
+import { Button } from '@chakra-ui/react'
+import { downloadMedia } from '../lib/objectDownload'
 
 const AUTOCOMPLETION_KEY = 'twitter_account_search_history'
 
@@ -52,15 +58,13 @@ const TwitterAccountSearch = () => {
     console.log(AutoCompletion)
   }, [AutoCompletion])
   return (
-    <>
-      <SearchBar
-        searchCallback={onSearch}
-        loading={Loading}
-        autoCompletionList={AutoCompletion}
-        recommendationsLimit={5}
-        handleSearchTextChange={onSearchTextChanged}
-      />
-    </>
+    <SearchBar
+      searchCallback={onSearch}
+      loading={Loading}
+      autoCompletionList={AutoCompletion}
+      recommendationsLimit={5}
+      handleSearchTextChange={onSearchTextChanged}
+    />
   )
 }
 

@@ -1,5 +1,4 @@
-import { Box, Text } from '@chakra-ui/react'
-import { Container } from '@chakra-ui/icons'
+import { Box, Text, Container } from '@chakra-ui/react'
 
 const PostLayout = ({ children, frontMatter }: any) => {
   const { slug, fileName } = frontMatter
