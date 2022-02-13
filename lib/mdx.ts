@@ -30,16 +30,11 @@ import rehypePresetMinify from 'rehype-preset-minify'
 
 const root = process.cwd()
 
-const getFilesInDir = (path: string) => {
-  return [
-    '/Users/suvam/Documents/Repos/Github/twitter-scraper-website/data/blog/hello-world.md',
-  ]
-}
 
 export function getFiles(type: string) {
   const prefixPaths = path.join(process.cwd(), 'data', type)
   // const files = getAllFilesRecursively(prefixPaths)
-  const files = ["/Users/suvam/Documents/Repos/Github/twitter-scraper-website/data/blog/hello-world.md"]
+  const files = [path.join(process.cwd(), "data/blog/hello-world.md")]
   // Only want to return blog/path and ignore root, replace is needed to work on Windows
   return files.map((file: any) =>
     file.slice(prefixPaths.length + 1).replace(/\\/g, '/')
@@ -149,7 +144,7 @@ export async function getAllFilesFrontMatter(folder) {
 
   // const files = getFilesInDir(prefixPaths)
   const files = [
-    '/Users/suvam/Documents/Repos/Github/twitter-scraper-website/data/blog/hello-world.md',
+    path.join(process.cwd(), "data/blog/hello-world.md"),
   ]
 
   const allFrontMatter = []

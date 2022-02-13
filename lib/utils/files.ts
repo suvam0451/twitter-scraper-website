@@ -16,7 +16,7 @@ const map = (fn: any) => (input: any) => input.map(fn)
 
 export default function getAllFilesRecursively(folder: string) {
   return [
-    '/Users/suvam/Documents/Repos/Github/twitter-scraper-website/data/blog/hello-world.md',
+    path.join(process.cwd(), "data/blog/hello-world.md"),
   ]
   // const est = pipe(
   //   fs.readdirSync,
@@ -39,8 +39,8 @@ const pathJoinPrefix = (prefix: any) => (extraPath: any) =>
 
 // export default getAllFilesRecursively
 
-export const getFilesInDir = (path: string) => {
+export const getFilesInDir = (_path: string) => {
   return [
-    '/Users/suvam/Documents/Repos/Github/twitter-scraper-website/data/blog/hello-world.md',
+    path.join(process.cwd(), "data/blog/hello-world.md"),
   ]
 }
