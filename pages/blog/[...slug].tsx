@@ -14,7 +14,6 @@ const DEFAULT_LAYOUT = 'PostLayout'
 const PATH_TO_BLOGS = 'blog'
 
 export const getStaticPaths = async () => {
-  console.log("just chillin")
   const posts = getFiles(PATH_TO_BLOGS)
   return {
     paths: posts.map((p: string) => ({

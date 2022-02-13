@@ -34,7 +34,7 @@ const NavBar = () => {
     },
     {
       label: 'Scraper',
-      href: '/twitter-scraper',
+      href: '/nsfw-scraper',
     },
     {
       label: 'About',

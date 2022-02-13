@@ -5,7 +5,7 @@ import {
   SettingsIcon,
   RepeatClockIcon,
   ArrowLeftIcon,
-  ArrowForwardIcon
+  ArrowForwardIcon,
 } from '@chakra-ui/icons'
 import {
   Box,
@@ -22,9 +22,12 @@ import {
   Image,
   Badge,
   InputLeftElement,
+  Text,
+  Center,
 } from '@chakra-ui/react'
 import { useDebouncedCallback } from 'use-debounce'
 import useOutsideClickDetector from '../../hooks/useClickedOutsideElement'
+import { useKeyPressEvent } from 'react-use'
 
 type SearchBarProps = {
   searchCallback: (str: string) => void
@@ -32,6 +35,7 @@ type SearchBarProps = {
   loading: boolean
   autoCompletionList: string[]
   recommendationsLimit: number
+  placeholder?: string
 }
 
 const SearchBar = (props: SearchBarProps) => {
@@ -41,32 +45,73 @@ const SearchBar = (props: SearchBarProps) => {
     autoCompletionList,
     recommendationsLimit,
     handleSearchTextChange,
+    placeholder
   } = props
   const SearchRef = useRef<HTMLInputElement>(null)
+  const [CanPressEnter, setCanPressEnter] = useState(false)
 
   const debounced = useDebouncedCallback((e) => {
-      if(SearchRef.current!.value.length > 2) {
-    handleSearchTextChange(SearchRef.current!.value)
-}
+    if (SearchRef.current!.value.length > 2) {
+      setCanPressEnter(true)
+      handleSearchTextChange(SearchRef.current!.value)
+    } else {
+      setCanPressEnter(false)
+    }
   }, 200)
 
   const handleSearch = (e: any) => {
     searchCallback(SearchRef.current!.value)
   }
 
+
+  useKeyPressEvent('Enter', handleSearch)
+
   return (
-    <Box px={8} py={8} minWidth="md" maxWidth="md" margin="auto" mt={'16'} mb={4}>
+    <Box>
       <InputGroup>
         <InputLeftElement>
           <SettingsIcon color="green.500" />
         </InputLeftElement>
         <Input
-          placeholder={'Enter your search query here...'}
+          placeholder={placeholder || 'Enter your search query here...'}
           onChange={debounced}
           ref={SearchRef}
         />
-        <InputRightElement onClick={handleSearch}>
-          {loading ? <Spinner /> : <SearchIcon color="green.500" />}
+
+        <InputRightElement onClick={handleSearch} className={'relative'}>
+          {loading ? (
+            <Spinner />
+          ) : (
+            <Box className={'flex flex-row'}>
+              <SearchIcon color="green.500" />
+              {CanPressEnter ? (
+                <Box className={'absolute top-1/2'}>
+                  <Box className={'relative'}>
+                    <Box
+                      className={
+                        'absolute top-0 right-0 pr-6 translate-x-1/2 -translate-y-1/2'
+                      }
+                    >
+                      <Text
+                        color={'gray'}
+                        borderWidth={1}
+                        borderColor={'gray'}
+                        borderRadius={'sm'}
+                        paddingX={1}
+                        opacity={0.5}
+                        fontSize={14}
+                        marginRight={4}
+                      >
+                        ⏎
+                      </Text>
+                    </Box>
+                  </Box>
+                </Box>
+              ) : (
+                <></>
+              )}
+            </Box>
+          )}
         </InputRightElement>
       </InputGroup>
       <AutoCompletionPopup

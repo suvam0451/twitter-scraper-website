@@ -38,7 +38,6 @@ const getFilesInDir = (path: string) => {
 
 export function getFiles(type: string) {
   const prefixPaths = path.join(process.cwd(), 'data', type)
-  console.log(prefixPaths)
   // const files = getAllFilesRecursively(prefixPaths)
   const files = ["/Users/suvam/Documents/Repos/Github/twitter-scraper-website/data/blog/hello-world.md"]
   // Only want to return blog/path and ignore root, replace is needed to work on Windows
@@ -163,7 +162,6 @@ export async function getAllFilesFrontMatter(folder) {
       return
     }
 
-    console.log("reading file", file)
     const source = fs.readFileSync(file, 'utf8')
     const { data: frontmatter } = matter(source)
     if (frontmatter.draft !== true) {

@@ -5,6 +5,7 @@ export const setSearchHistory = (storeName: string, newEntry: string) => {
     return
   }
   const arr: string[] = JSON.parse(initial)
+  if(arr.includes(newEntry)) return 0
   arr.push(newEntry)
   localStorage.setItem(storeName, JSON.stringify(arr))
   return 0

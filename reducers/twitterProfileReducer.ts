@@ -1,3 +1,5 @@
+import { setSearchHistory } from '../services/local-search-history.service'
+
 export type twitterProfileStore = {
   profileIds: number[]
   profileMeta: {
@@ -25,6 +27,7 @@ export type ITwitterMediaLinkMeta = {
 
 export enum TWITTER_STORE_ACTION {
   ADD_USER_TO_FAVOURITES,
+  REMOVE_USER_FROM_FAVOURITES,
   ADD_USER_TO_SEARCH_RESULT,
   ADD_IMAGES_TO_GALLERY,
   LIKE_IMAGE,
@@ -39,6 +42,12 @@ export type IAction =
         username: string
         name: string
         likeRatio?: number
+      }
+    }
+  | {
+      type: TWITTER_STORE_ACTION.REMOVE_USER_FROM_FAVOURITES
+      payload: {
+        index: number
       }
     }
   | {
@@ -83,10 +92,11 @@ export const reducer = (
   action: IAction
 ): twitterProfileStore => {
   switch (action.type) {
+    // add user on screen (and store him as historical searches)
     case TWITTER_STORE_ACTION.ADD_USER_TO_FAVOURITES: {
       const { id, username, name } = action.payload
+      setSearchHistory('r34s_twitter_account_history', username)
       if (state.profileIds.find((o) => o === id)) return state
-
       const newState = {
         ...state,
         profileIds: state.profileIds.concat([id]),
@@ -100,6 +110,13 @@ export const reducer = (
         ]),
       }
       return newState
+    }
+    case TWITTER_STORE_ACTION.REMOVE_USER_FROM_FAVOURITES: {
+      const { index } = action.payload
+      const obj = state
+      obj.profileIds.splice(index, 1)
+      obj.profileMeta.splice(index, 1)
+      return obj
     }
     case TWITTER_STORE_ACTION.ADD_USER_TO_SEARCH_RESULT: {
       return state
