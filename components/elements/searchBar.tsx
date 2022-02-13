@@ -5,7 +5,7 @@ import {
   SettingsIcon,
   RepeatClockIcon,
   ArrowLeftIcon,
-  ArrowForwardIcon,
+  ArrowForwardIcon
 } from '@chakra-ui/icons'
 import {
   Box,

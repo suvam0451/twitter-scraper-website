@@ -4,6 +4,7 @@ import PercentageWrapper from '../components/elements/PercentageWrapper'
 import NavBar from '../components/NavBar'
 import TwitterAccountSavedProfile from '../components/TwitterAccountSavedProfile'
 import TwitterImageGallery from '../components/TwitterImageGallery'
+import ViewSelection from '../components/elements/ViewSelection'
 
 const TwitterScraper: NextPage = () => {
   return (
@@ -13,6 +14,7 @@ const TwitterScraper: NextPage = () => {
 
       <TwitterAccountSavedProfile />
       <TwitterImageGallery/>
+      <ViewSelection />
       {/* <PercentageWrapper /> */}
     </>
   )
