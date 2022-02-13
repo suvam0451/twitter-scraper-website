@@ -1,5 +1,5 @@
 
-import siteMetadata from '@/data/siteMetadata'
+import siteMetadata from '../../data/siteMetadata'
 
 const formatDate = (date) => {
   const options: any = {

@@ -15,10 +15,10 @@ import remarkGfm from 'remark-gfm'
 import remarkFootnotes from 'remark-footnotes'
 import remarkMath from 'remark-math'
 // Remark packages (extended)
-import remarkExtractFrontmatter from './remark/remark-extract-frontmatter'
-import remarkCodeTitles from './remark/remark-code-title'
-import remarkTocHeadings from './remark/remark-toc-headings'
-import remarkImgToJsx from './remark/remark-img-to-jsx'
+// import remarkExtractFrontmatter from './remark/remark-extract-frontmatter'
+// import remarkCodeTitles from './remark/remark-code-title'
+// import remarkTocHeadings from './remark/remark-toc-headings'
+// import remarkImgToJsx from './remark/remark-img-to-jsx'
 
 // Rehype packages
 import rehypeSlug from 'rehype-slug'
@@ -94,10 +94,10 @@ export async function getFileBySlug(type: string, slug: string) {
       // plugins in the future.
       options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
-        remarkExtractFrontmatter,
-        [remarkTocHeadings, { exportRef: toc }],
+        // remarkExtractFrontmatter,
+        // [remarkTocHeadings, { exportRef: toc }],
         remarkGfm,
-        remarkCodeTitles,
+        // remarkCodeTitles,
         [remarkFootnotes, { inlineNotes: true }],
         remarkMath,
         /**
