@@ -13,6 +13,12 @@ const TwitterScraper: NextPage = () => {
     <Head>
       <title>NSFW media scraping tool</title>
       <meta property="og:title" content="NSFW media scraping tool" key="title" />
+      <meta name="description" content="mugi: this site is UUUOHH, awawawa"/>
+      {/* Discord Embed */}
+      <meta property="og:site_name" content="NSFW Scraping Tool" />
+      <meta property="og:image" content="https://cdn.discordapp.com/emojis/894894327736717342.webp" />
+      <meta name="theme-color" content="#55bbee" />
+      <meta name="twitter:card" content="summary_large_image" />
     </Head>
         <BaseLayout>
       <Provider>
