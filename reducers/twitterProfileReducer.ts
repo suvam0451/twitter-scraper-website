@@ -23,6 +23,7 @@ export type ITwitterMediaLinkMeta = {
   type: string
   url?: string
   liked: boolean
+  downloaded: boolean
 }
 
 export enum TWITTER_STORE_ACTION {
@@ -31,7 +32,9 @@ export enum TWITTER_STORE_ACTION {
   ADD_USER_TO_SEARCH_RESULT,
   ADD_IMAGES_TO_GALLERY,
   LIKE_IMAGE,
+  SET_DOWNLOAD_FLAG_TRUE,
   SELECT_USER,
+  UNLIKE_IMAGE,
 }
 
 export type IAction =
@@ -75,11 +78,24 @@ export type IAction =
       }
     }
   | {
+      type: TWITTER_STORE_ACTION.UNLIKE_IMAGE
+      payload: {
+        itemIndex: number
+      }
+    }
+  | {
       type: TWITTER_STORE_ACTION.SELECT_USER
       payload: {
         id: number
       }
     }
+  | {
+      type: TWITTER_STORE_ACTION.SET_DOWNLOAD_FLAG_TRUE
+      payload: {
+        itemIndex: number
+      }
+    }
+
 export const initialState: twitterProfileStore = {
   profileIds: [],
   profileMeta: [],
@@ -111,6 +127,12 @@ export const reducer = (
       }
       return newState
     }
+    case TWITTER_STORE_ACTION.SET_DOWNLOAD_FLAG_TRUE: {
+      const { itemIndex } = action.payload
+      const obj = state
+      obj.nsfwLinks[itemIndex].downloaded = !obj.nsfwLinks[itemIndex].downloaded
+      return obj
+    }
     case TWITTER_STORE_ACTION.REMOVE_USER_FROM_FAVOURITES: {
       const { index } = action.payload
       const obj = state
@@ -128,10 +150,17 @@ export const reducer = (
         curretUser: state.profileMeta.find((o) => o.id === id),
       }
     }
+
     case TWITTER_STORE_ACTION.LIKE_IMAGE: {
       const { itemIndex } = action.payload
       const obj = state
-      obj.nsfwLinks[itemIndex].liked = !obj.nsfwLinks[itemIndex].liked
+      obj.nsfwLinks[itemIndex].liked = true
+      return obj
+    }
+    case TWITTER_STORE_ACTION.UNLIKE_IMAGE: {
+      const { itemIndex } = action.payload
+      const obj = state
+      obj.nsfwLinks[itemIndex].liked = false
       return obj
     }
 
@@ -145,12 +174,14 @@ export const reducer = (
           type,
           url,
           liked: false,
+          downloaded: false,
         })),
         sfwLinks: sfw.map(({ media_key, type, url }) => ({
           media_key,
           type,
           url,
           liked: false,
+          downloaded: false,
         })),
       }
       return newState

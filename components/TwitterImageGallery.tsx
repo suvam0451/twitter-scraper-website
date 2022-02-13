@@ -1,4 +1,12 @@
-import { Box, Button, Center, Image, Progress, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Center,
+  Image,
+  Progress,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useKeyPressEvent } from 'react-use'
 import { useTwitterStateContext } from '../context/twitterProfileReducer'
@@ -32,6 +40,7 @@ const TwitterImageGallery = () => {
     rightLocked: true,
   })
   const [LikedCurrent, setLikedCurrent] = useState(false)
+  const [DownloadedCurrent, setDownloadedCurrent] = useState(false)
 
   useEffect(() => {
     window.addEventListener(
@@ -59,6 +68,7 @@ const TwitterImageGallery = () => {
   useEffect(() => {
     if (Counter !== -1 && TotalLength > 0) {
       setPercentageProgress((Counter * 100) / TotalLength)
+      setDownloadedCurrent(state!.nsfwLinks[Counter].downloaded)
     }
   }, [Counter])
 
@@ -87,10 +97,17 @@ const TwitterImageGallery = () => {
       return
 
     const { url, type } = state!.nsfwLinks[Counter]
-    if(!url) return
+    if (!url) return
     const result = url.match(filenameGenerator.photo)
-    if(!result) return
+    if (!result) return
     downloadMedia(url, result[1])
+    dispatch({
+      type: TWITTER_STORE_ACTION.SET_DOWNLOAD_FLAG_TRUE,
+      payload: {
+        itemIndex: Counter,
+      },
+    })
+    setDownloadedCurrent(true)
   }
 
   useKeyPressEvent('ArrowLeft', onPressPrevious)
@@ -116,6 +133,25 @@ const TwitterImageGallery = () => {
         itemIndex: i,
       },
     })
+  }
+
+  const onPressToggleFavourite = (i: number) => {
+    if (!LikedCurrent) {
+      dispatch!({
+        type: TWITTER_STORE_ACTION.LIKE_IMAGE,
+        payload: {
+          itemIndex: i,
+        },
+      })
+    } else {
+      dispatch!({
+        type: TWITTER_STORE_ACTION.UNLIKE_IMAGE,
+        payload: {
+          itemIndex: i,
+        },
+      })
+    }
+    setLikedCurrent(!LikedCurrent)
   }
 
   return state!.nsfwLinks.length > 0 && Counter !== -1 ? (
@@ -158,7 +194,7 @@ const TwitterImageGallery = () => {
                     src={state!.nsfwLinks[Counter].url}
                     alt="twitter image"
                     crossOrigin="anonymous"
-                    objectFit={"fill"}
+                    objectFit={'fill'}
                     // marginY={'auto'}
                   />
                 </Box>
@@ -174,7 +210,7 @@ const TwitterImageGallery = () => {
                           icon={faHeart}
                           size={'2x'}
                           onClick={() => {
-                            onPressFavourite(Counter)
+                            onPressToggleFavourite(Counter)
                           }}
                           color={
                             state!.nsfwLinks[Counter].liked || LikedCurrent
@@ -183,21 +219,36 @@ const TwitterImageGallery = () => {
                           }
                         />
                       </Center>
+
                       <Center>
-                        <FontAwesomeIcon
-                          icon={faFileDownload}
-                          size={'2x'}
-                          onClick={() => {
-                            onPressFavourite(Counter)
-                          }}
-                          color={
-                            state!.nsfwLinks[Counter].liked || LikedCurrent
-                              ? '#ffbfbd'
-                              : 'gray'
-                          }
-                          className={'mt-5'}
-                        />
+                        <Box className={'mt-5'}>
+                          <Tooltip
+                            label={
+                              state?.nsfwLinks[Counter].downloaded
+                                ? 'Already downloaded'
+                                : 'Press to Download !'
+                            }
+                            placement={'top'}
+                          >
+                            <Box>
+                              <FontAwesomeIcon
+                                icon={faFileDownload}
+                                size={'2x'}
+                                onClick={() => {
+                                  onPressDownload(Counter)
+                                }}
+                                color={
+                                  state?.nsfwLinks[Counter].downloaded ||
+                                  DownloadedCurrent
+                                    ? 'green'
+                                    : 'gray'
+                                }
+                              />
+                            </Box>
+                          </Tooltip>
+                        </Box>
                       </Center>
+
                       <Center>
                         <FontAwesomeIcon
                           icon={faEllipsis}
@@ -205,11 +256,7 @@ const TwitterImageGallery = () => {
                           onClick={() => {
                             onPressFavourite(Counter)
                           }}
-                          color={
-                            state!.nsfwLinks[Counter].liked || LikedCurrent
-                              ? '#ffbfbd'
-                              : 'gray'
-                          }
+                          color={'gray'}
                           className={'mt-5'}
                         />
                       </Center>
@@ -227,6 +274,9 @@ const TwitterImageGallery = () => {
           color={NavigationBounds.rightLocked ? 'gray' : 'white'}
           opacity={NavigationBounds.rightLocked ? 0.1 : 1}
         />
+      </Center>
+      <Center className={'mt-2'}>
+        <Button onClick={onPressDownload}>Download</Button>
       </Center>
     </>
   ) : (
