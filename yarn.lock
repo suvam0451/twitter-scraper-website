@@ -1538,9 +1538,9 @@ camelcase-css@^2.0.1:
   integrity sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==
 
 caniuse-lite@^1.0.30001283, caniuse-lite@^1.0.30001286, caniuse-lite@^1.0.30001297:
-  version "1.0.30001311"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001311.tgz#682ef3f4e617f1a177ad943de59775ed3032e511"
-  integrity sha512-mleTFtFKfykEeW34EyfhGIFjGCqzhh38Y0LhdQ9aWF+HorZTtdgKV/1hEE0NlFkG2ubvisPV6l400tlbPys98A==
+  version "1.0.30001312"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001312.tgz#e11eba4b87e24d22697dae05455d5aea28550d5f"
+  integrity sha512-Wiz1Psk2MEK0pX3rUzWaunLTZzqS2JYZFzNKqAiJGiuxIjRPLgV6+VDPOg6lQOUxmDwhTlh198JsTTi8Hzw6aQ==
 
 ccount@^2.0.0:
   version "2.0.1"
@@ -2697,6 +2697,14 @@ hast-util-embedded@^2.0.0:
   integrity sha512-vEr54rDu2CheBM4nLkWbW8Rycf8HhkA/KsrDnlyKnvBTyhyO+vAG6twHnfUbiRGo56YeUBNCI4HFfHg3Wu+tig==
   dependencies:
     hast-util-is-element "^2.0.0"
+
+hast-util-from-dom@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/hast-util-from-dom/-/hast-util-from-dom-4.1.0.tgz#8a09b3bb9c624371e3d5fae114678f663f928d06"
+  integrity sha512-0EMIYQVIhRfiC1LVdTsvM4yTY0rM/v63wwoYmOYV02mIOASYeQrfQekG4Jhge2kOAMaNFbvppUma47rbeWWE5Q==
+  dependencies:
+    hastscript "^7.0.0"
+    web-namespaces "^2.0.0"
 
 hast-util-from-parse5@^7.0.0, hast-util-from-parse5@^7.1.0:
   version "7.1.0"
@@ -3955,9 +3963,9 @@ mimic-response@^3.1.0:
   integrity sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==
 
 minimatch@^3.0.4:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.5.tgz#4da8f1290ee0f0f8e83d60ca69f8f134068604a3"
-  integrity sha512-tUpxzX0VAzJHjLu0xUfFv1gwVp9ba3IOuRAVH2EGuRW8a5emA2FlACLqiT/lDVtS1W+TGNwqz3sWaNyLgDJWuw==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.1.tgz#879ad447200773912898b46cd516a7abbb5e50b0"
+  integrity sha512-reLxBcKUPNBnc/sVtAbxgRVFSegoGeLaSjmphNhcwcolhYLRgtJscn5mRl6YRZNQv40Y7P6JM2YhSIsbL9OB5A==
   dependencies:
     brace-expansion "^1.1.7"
 
@@ -4549,10 +4557,10 @@ rehype-autolink-headings@^6.1.1:
     unified "^10.0.0"
     unist-util-visit "^4.0.0"
 
-rehype-citation@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/rehype-citation/-/rehype-citation-0.2.4.tgz#0c1ac362cdecf4541e1bd5e44751980fd05a315f"
-  integrity sha512-yioOijMi0DOoXPE0vIlIsi9iD2AVu7MYjys3N3h/CJ2icj9f+muLQzXPBvsCj9+9JKimKuBgcL3vEnhx/8F3jw==
+rehype-citation@^0.2.4, rehype-citation@^0.2.5-rc.0:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/rehype-citation/-/rehype-citation-0.2.5.tgz#386a9e1f8f36b6363209396e10525511df5881a4"
+  integrity sha512-d4s4JPjjCqB7xqeIz7qf4oemhuTcFhYDvP57ciOwymLsaDiQhfOq6iJsnCBXmBP8a4O2EHDsQg5mwUTMIKBfRA==
   dependencies:
     "@citation-js/core" "^0.5.4"
     "@citation-js/date" "^0.5.1"
@@ -4562,8 +4570,10 @@ rehype-citation@^0.2.4:
     "@citation-js/plugin-csl" "^0.5.5"
     citeproc "^2.4.62"
     cross-fetch "^3.1.5"
+    hast-util-from-dom "^4.1.0"
     hast-util-from-parse5 "^7.1.0"
     parse5 "^6.0.1"
+    rehype-citation "^0.2.5-rc.0"
     unified "^10.1.0"
     unist-util-visit "^4.0.0"
 

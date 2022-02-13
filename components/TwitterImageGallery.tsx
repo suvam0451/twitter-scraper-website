@@ -87,7 +87,9 @@ const TwitterImageGallery = () => {
       return
 
     const { url, type } = state!.nsfwLinks[Counter]
-    const result = url.match(filenameGenerator[type])
+    if(!url) return
+    const result = url.match(filenameGenerator.photo)
+    if(!result) return
     downloadMedia(url, result[1])
   }
 
