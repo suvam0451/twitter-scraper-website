@@ -55,7 +55,7 @@ const SearchBar = (props: SearchBarProps) => {
   }
 
   return (
-    <Box px={8} py={8} minWidth="md" maxWidth="md" margin="auto" mt={'16'} mb={8}>
+    <Box px={8} py={8} minWidth="md" maxWidth="md" margin="auto" mt={'16'} mb={4}>
       <InputGroup>
         <InputLeftElement>
           <SettingsIcon color="green.500" />

@@ -4,21 +4,31 @@ export type twitterProfileStore = {
     id: number
     username: string
     name: string
+    likeRatio: number // 0-100 (% of liked images)
   }[]
   nsfwLinks: ITwitterMediaLinkMeta[]
   sfwLinks: ITwitterMediaLinkMeta[]
+  curretUser?: {
+    id: number
+    username: string
+    name: string
+    likeRatio: number // 0-100 (% of liked images)
+  }
 }
 
 export type ITwitterMediaLinkMeta = {
   media_key: string
   type: string
   url?: string
+  liked: boolean
 }
 
 export enum TWITTER_STORE_ACTION {
   ADD_USER_TO_FAVOURITES,
   ADD_USER_TO_SEARCH_RESULT,
   ADD_IMAGES_TO_GALLERY,
+  LIKE_IMAGE,
+  SELECT_USER,
 }
 
 export type IAction =
@@ -28,6 +38,7 @@ export type IAction =
         id: number
         username: string
         name: string
+        likeRatio?: number
       }
     }
   | {
@@ -36,6 +47,7 @@ export type IAction =
         id: number
         username: string
         name: string
+        likeRatio?: number
       }
     }
   | {
@@ -45,6 +57,18 @@ export type IAction =
           nsfw: ITwitterMediaLinkMeta[]
           sfw: ITwitterMediaLinkMeta[]
         }
+      }
+    }
+  | {
+      type: TWITTER_STORE_ACTION.LIKE_IMAGE
+      payload: {
+        itemIndex: number
+      }
+    }
+  | {
+      type: TWITTER_STORE_ACTION.SELECT_USER
+      payload: {
+        id: number
       }
     }
 export const initialState: twitterProfileStore = {
@@ -61,7 +85,6 @@ export const reducer = (
   switch (action.type) {
     case TWITTER_STORE_ACTION.ADD_USER_TO_FAVOURITES: {
       const { id, username, name } = action.payload
-      console.log('twitter store', state)
       if (state.profileIds.find((o) => o === id)) return state
 
       const newState = {
@@ -72,6 +95,7 @@ export const reducer = (
             id,
             username,
             name,
+            likeRatio: 0,
           },
         ]),
       }
@@ -80,21 +104,38 @@ export const reducer = (
     case TWITTER_STORE_ACTION.ADD_USER_TO_SEARCH_RESULT: {
       return state
     }
+    case TWITTER_STORE_ACTION.SELECT_USER: {
+      const { id } = action.payload
+      return {
+        ...state,
+        curretUser: state.profileMeta.find((o) => o.id === id),
+      }
+    }
+    case TWITTER_STORE_ACTION.LIKE_IMAGE: {
+      const { itemIndex } = action.payload
+      const obj = state
+      obj.nsfwLinks[itemIndex].liked = !obj.nsfwLinks[itemIndex].liked
+      return obj
+    }
+
     case TWITTER_STORE_ACTION.ADD_IMAGES_TO_GALLERY: {
-      console.log(action.payload)
-
       const { nsfw, sfw } = action.payload.data
-      console.log('tests', nsfw, sfw, nsfw[0])
-
       if (!nsfw || !sfw) return state
-
-      console.log('setting new state', action.payload)
       const newState = {
         ...state,
-        nsfwLinks: nsfw,
-        sfwLinks: sfw,
+        nsfwLinks: nsfw.map(({ media_key, type, url }) => ({
+          media_key,
+          type,
+          url,
+          liked: false,
+        })),
+        sfwLinks: sfw.map(({ media_key, type, url }) => ({
+          media_key,
+          type,
+          url,
+          liked: false,
+        })),
       }
-      console.log('set new state', newState)
       return newState
     }
   }

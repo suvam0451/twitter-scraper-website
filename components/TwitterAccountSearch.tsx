@@ -8,6 +8,8 @@ import SearchBar from './elements/searchBar'
 import { useTwitterStateContext } from '../context/twitterProfileReducer'
 import { TWITTER_STORE_ACTION } from '../reducers/twitterProfileReducer'
 import { UserMetaData } from '../types/twitter'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 const AUTOCOMPLETION_KEY = 'twitter_account_search_history'
 
