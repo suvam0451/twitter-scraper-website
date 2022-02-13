@@ -66,7 +66,7 @@ const TwitterImageGallery = () => {
   }, [state])
 
   useEffect(() => {
-    if (Counter !== -1 && TotalLength > 0) {
+    if (Counter !== -1 && Counter < TotalLength && TotalLength > 0) {
       setPercentageProgress((Counter * 100) / TotalLength)
       setDownloadedCurrent(state!.nsfwLinks[Counter].downloaded)
     }
@@ -224,7 +224,7 @@ const TwitterImageGallery = () => {
                         <Box className={'mt-5'}>
                           <Tooltip
                             label={
-                              state?.nsfwLinks[Counter].downloaded
+                              state?.nsfwLinks[Counter].downloaded || DownloadedCurrent
                                 ? 'Already downloaded'
                                 : 'Press to Download !'
                             }
