@@ -3,7 +3,8 @@ import config from './config.service'
 
 const getClient = () => {
   return axios.create({
-    baseURL: `http://${config.backend.host}:${config.backend.port}`,
+    baseURL: config.backend.port === "80" ? `${config.backend.host}`:
+    `${config.backend.host}:${config.backend.port}`,
   })
 }
 
