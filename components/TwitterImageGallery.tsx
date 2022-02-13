@@ -27,7 +27,7 @@ import { TWITTER_STORE_ACTION } from '../reducers/twitterProfileReducer'
 import { downloadMedia } from '../lib/objectDownload'
 
 const filenameGenerator = {
-  photo: /([a-zA-Z0-9]+\.(jpg|png))/,
+  photo: /([a-zA-Z0-9-]+\.(jpg|png))/,
 }
 
 const TwitterImageGallery = () => {
