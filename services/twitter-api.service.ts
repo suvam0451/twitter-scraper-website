@@ -4,7 +4,7 @@ import { ITwitterMediaLinkMeta } from '../reducers/twitterProfileReducer'
 import { UserMetaData, UserTweetsResponse } from '../types/twitter'
 import { getRequest } from './backend.service'
 
-dotenv.config({ path: './.env' })
+dotenv.config({ path: './.env.local' })
 
 const DEFAULT_TWEET_LIMIT = 200
 const DEFAULT_TWEETS_PER_PAGE = 100

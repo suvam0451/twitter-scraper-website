@@ -8,9 +8,7 @@ import SearchBar from './elements/searchBar'
 import { useTwitterStateContext } from '../context/twitterProfileReducer'
 import { TWITTER_STORE_ACTION } from '../reducers/twitterProfileReducer'
 import { UserMetaData } from '../types/twitter'
-import { faQuestionCircle, faQuestion } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import { Box, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import {
   DragHandleIcon,
   ChevronLeftIcon,
@@ -19,6 +17,8 @@ import {
   ChevronDownIcon,
   HamburgerIcon,
 } from '@chakra-ui/icons'
+import { searchUsernames } from '../services/twitter.service'
+import { useTwitterContext } from '../state/twitterContext'
 const AUTOCOMPLETION_KEY = 'twitter_account_search_history'
 
 const TwitterAccountSearch = () => {
@@ -27,23 +27,30 @@ const TwitterAccountSearch = () => {
 
   const { state, dispatch } = useTwitterStateContext()
 
+  const { accountList, setAccountList, addAccount, removeAccount } = useTwitterContext()
+
   const onSearch = async (q: string) => {
     setLoading(true)
     setSearchHistory(AUTOCOMPLETION_KEY, q)
-    const res = await getRequest<UserMetaData>(`/twitter/users?q=${q}`)
+    const res = await searchUsernames(q)
 
     if (res.code !== 200) {
       setLoading(false)
       return
     }
-    dispatch!({
-      type: TWITTER_STORE_ACTION.ADD_USER_TO_FAVOURITES,
-      payload: {
-        id: res.data?.data?.id! as unknown as number,
-        username: res.data?.data?.username!,
-        name: res.data?.data?.name!,
-      },
-    })
+    if(res.data.data.length > 0) {
+      console.log("adding", res.data.data[0])
+      addAccount(res.data.data[0])
+    }
+
+    // dispatch!({
+    //   type: TWITTER_STORE_ACTION.ADD_USER_TO_FAVOURITES,
+    //   payload: {
+    //     id: res.data?.data?.id! as unknown as number,
+    //     username: res.data?.data?.username!,
+    //     name: res.data?.data?.name!,
+    //   },
+    // })
     setLoading(false)
   }
 
@@ -53,6 +60,9 @@ const TwitterAccountSearch = () => {
 
   return (
     <Box className={'relative flex flex-row'}>
+      {accountList.map((o, i) => <Box key={i}>
+        <Text>{o.username}</Text>
+      </Box>)}
       <Box
         px={8}
         py={8}

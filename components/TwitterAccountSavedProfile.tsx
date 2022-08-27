@@ -19,11 +19,13 @@ import { fetchPostsForUserId } from '../services/twitter-api.service'
 import { faCheckCircle, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDisplayedUsername } from '../lib/formatters/twitter'
+import { useTwitterContext } from '../state/twitterContext'
 
 const TwitterAccountSavedProfile = () => {
   const { state, dispatch } = useTwitterStateContext()
   const [Loading, setLoading] = useState(false)
   const [HighlightedItemIndex, setHighlightedItemIndex] = useState(-1)
+  const { accountList, setAccountList, addAccount, removeAccount } = useTwitterContext()
 
   const itemSelected = async (e: number) => {
     setLoading(true)
@@ -53,9 +55,13 @@ const TwitterAccountSavedProfile = () => {
     }
   }
 
+  useEffect(() => {
+    console.log("list changed", accountList)
+  }, [accountList])
+
   return (
     <>
-      <Center className={'mb-4'}>
+      <Center className={'mb-4'} bgColor={"blue"}>
         <Box className="flex flex-row" my={1}>
           {state!.profileMeta.map((ele, i) => (
             <Box
