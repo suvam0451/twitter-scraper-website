@@ -39,3 +39,7 @@ yarn-error.log*
 
 # dotenv
 .env
+
+# pwa
+workbox-*.js
+sw.js

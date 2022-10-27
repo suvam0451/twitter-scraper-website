@@ -71,7 +71,7 @@ const FeaturedProject = ({
         </Box>
       </Box>
       <Box flex={'1'} ml={"-8"} pt={4}>
-        <img alt={"Project Image"} src={imageUrl} width={500} height={600}/>
+        <Image alt={"Project Image"} src={imageUrl} width={500} height={600}/>
       </Box>
     </Flex>
 
