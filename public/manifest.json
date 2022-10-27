@@ -1,17 +1,30 @@
 {
-  "theme_color": "#f69435",
-  "background_color": "#ddd",
-  "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
   "name": "Suvam0451 Portfolio App",
   "short_name": "Suvam0451",
   "description": "My Portfolio App",
+  "theme_color": "#f69435",
+  "background_color": "#ddd",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/?source=pwa",
   "icons": [
     {
       "src": "/icons/512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/icons/192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     },
     {
       "src": "/icons/192.png",
