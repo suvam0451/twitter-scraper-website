@@ -28,7 +28,6 @@ const TwitterScraper: NextPage = () => {
       </Provider>
     </BaseLayout>
     </>
-
   )
 }
 

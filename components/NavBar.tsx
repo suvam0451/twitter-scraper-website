@@ -15,63 +15,154 @@ import {
   Link,
   Text,
   Container,
+  Popover,
+  PopoverContent,
+  Divider,
+  PopoverTrigger as OrigPopoverTrigger
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+
+export const PopoverTrigger: React.FC<{ children: React.ReactNode }> =
+  OrigPopoverTrigger
 
 interface NavItem {
   label: string
   subLabel?: string
   children?: Array<NavItem>
   href?: string
+  external?: boolean
 }
 
+const NavigationSublinkArray = ({ ele }: any) => {
+  const { colorMode, toggleColorMode } = useColorMode()
+  const linkColor = useColorModeValue('gray.200', 'gray.200')
+  const linkHoverColor = useColorModeValue('white', 'white')
+  const popoverContentBgColor = useColorModeValue('white', 'gray.800')
+
+  return (
+    <>
+      <Stack
+        bg={useColorModeValue('gray.900', 'gray.900')}
+        rounded={'lg'}
+        paddingX={'4'}
+        paddingY={4}
+      >
+        {ele.children.map((e, i) => (
+          <Box key={i}>
+            <Box marginBottom={'2'}>
+              {i > 0 ? <Divider width={'full'} /> : <></>}
+            </Box>
+            <Box
+              rounded={'lg'}
+              padding={2}
+              transition={'all .3s ease'}
+              _hover={{ backgroundColor: 'gray.600' }}
+            >
+              <Link
+                role={'group'}
+                display={'block'}
+                href={ele.href ?? '#'}
+                color={linkColor}
+                _hover={{
+                  textDecoration: 'none',
+                  color: linkHoverColor
+                }}
+              >
+                <Text fontWeight={600}>{e.label}</Text>
+                <Text fontSize={'sm'} fontWeight={200}>
+                  {e.subLabel}
+                </Text>
+              </Link>
+            </Box>
+          </Box>
+        ))}
+      </Stack>
+    </>
+  )
+}
 const NavBar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const NAV_ITEMS: Array<NavItem> = [
     {
       label: 'Home',
-      href: '/',
+      href: '/'
     },
     {
-      label: 'Scraper',
+      label: 'Project',
       href: '/nsfw-scraper',
+      children: [
+        {
+          label: 'Twitter Scraper',
+          subLabel: 'follow and save images from your favourite creator',
+          href: 'twitter.suvam0451.com',
+          external: true
+        },
+        {
+          label: 'Skyblock Market Tracker',
+          subLabel: 'find the items with best profit margins',
+          href: 'skyblock.suvam0451.com',
+          external: true
+        },
+        {
+          label: 'Imageboard Scraping Assistant',
+          subLabel: 'download images in bulk',
+          href: 'https://scraper.suvam0451.com',
+          external: true
+        }
+      ]
+    },
+    {
+      label: 'Tools',
+      href: '/tools',
+      children: [
+        {
+          label: 'Sleeping Forest',
+          subLabel: 'Feature-rich Gamedev extension for unreal engine'
+        }
+      ]
     },
     {
       label: 'About',
-      href: '/about',
-    },
+      href: '/about'
+    }
   ]
 
-  const linkColor = useColorModeValue('gray.600', 'gray.200')
-  const linkHoverColor = useColorModeValue('gray.800', 'white')
+  const linkColor = useColorModeValue('gray.200', 'gray.200')
+  const linkHoverColor = useColorModeValue('white', 'white')
   const popoverContentBgColor = useColorModeValue('white', 'gray.800')
 
   return (
-    <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+    <Box bg={useColorModeValue('gray.900', 'gray.900')} px={4}>
       <Container maxWidth={'container.lg'}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        <Flex h={12} alignItems={'center'} justifyContent={'space-between'}>
           <Box>
             <Box className={'flex flex-row'}>
               <Text className={'mr-4'}>Suvam0451</Text>
               {NAV_ITEMS.map((ele, i) => (
-                <Box key={i} mx={2}>
-                  <Link
-                    href={ele.href ?? '#'}
-                    color={linkColor}
-                    _hover={{
-                      textDecoration: 'none',
-                      color: linkHoverColor,
-                    }}
-                  >
-                    {ele.label}
-                  </Link>
+                <Box key={i} mx={4}>
+                  <Popover trigger={'hover'} placement={'bottom-start'}>
+                    <PopoverTrigger>
+                      <Box>
+                        <Link href={ele.href}>
+                          <Text fontSize={20} color={linkColor}>
+                            {ele.label}
+                          </Text>
+                        </Link>
+                      </Box>
+                    </PopoverTrigger>
+                    {ele.children && (
+                      <PopoverContent border={0} boxShadow={'xl'} width={'sm'}>
+                        <NavigationSublinkArray ele={ele} />
+                      </PopoverContent>
+                    )}
+                  </Popover>
                 </Box>
               ))}
             </Box>
           </Box>
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button onClick={toggleColorMode}>
+              <Button onClick={toggleColorMode} size={'sm'}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
 

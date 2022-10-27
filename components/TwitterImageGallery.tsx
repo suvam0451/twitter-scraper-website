@@ -12,15 +12,11 @@ import { useKeyPressEvent } from 'react-use'
 import { useTwitterStateContext } from '../context/twitterProfileReducer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faCoffee,
   faChevronLeft,
   faChevronRight,
   faHeart,
   faCloudDownload,
   faFileDownload,
-  faDownload,
-  faCloudDownloadAlt,
-  faListDots,
   faEllipsis,
 } from '@fortawesome/free-solid-svg-icons'
 import { TWITTER_STORE_ACTION } from '../reducers/twitterProfileReducer'
