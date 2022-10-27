@@ -43,3 +43,5 @@ yarn-error.log*
 # pwa
 workbox-*.js
 sw.js
+sw.js.map
+workbox-*.js.map
