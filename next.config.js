@@ -1,9 +1,12 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require('next-pwa')({
-  dest: 'public'
-})
+const withPWA = require('next-pwa')
+const runtimeCaching = require("next-pwa/cache")
 
 const nextConfig = withPWA({
+  pwa: {
+    dest: "public",
+    runtimeCaching
+  },
   webpack: (config) => {
     config.resolve.fallback = { ...config.resolve.fallback, fs: false }
     return config
